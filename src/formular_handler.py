@@ -31,6 +31,11 @@ def put(id):
     return response(200, formular_item.to_json())
 
 
+@app.get('/api/formularview/<id>')
+def getView(id):
+    return get(id)
+
+
 @app.get('/api/formular/<id>')
 def get(id):
     id = urllib.parse.quote(id)
@@ -41,6 +46,11 @@ def get(id):
         return response(200, formular_item.to_json())
     else:
         return empty_response(404)
+
+
+@app.get('/api/formularview')
+def getAllView():
+    return getAll()
 
 
 @app.get('/api/formular')
