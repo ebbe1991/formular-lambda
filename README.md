@@ -1,14 +1,6 @@
 # Formular-Lambda
 
-## Routen
-
-### Neuigkeit 
-
-- POST api/formular
-- GET api/formular/<id>
-- PUT api/formular/<id>
-- DELETE api/formular/<id>
-
+### Formular 
 
 ## Umgebungsvariablen
 | Name                | Beschreibung                                       |
