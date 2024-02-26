@@ -1,6 +1,6 @@
 from aws_lambda_powertools.event_handler import APIGatewayHttpResolver
-import src.formular_controller as formular_controller
-from src.formular_controller import FormularDTO
+import formular_controller as formular_controller
+from formular_controller import FormularDTO
 from lambda_utils.response_utils import response, empty_response, to_json_array
 from lambda_utils.event_utils import extract_body, extract_tenant
 from lambda_utils.exception import ValidationException

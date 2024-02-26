@@ -1,6 +1,6 @@
 import os
 import boto3
-from src.formular_dto import FormularDTO
+from formular_dto import FormularDTO
 from boto3.dynamodb.conditions import Key
 
 
