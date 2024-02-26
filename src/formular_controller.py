@@ -50,7 +50,7 @@ def delete_formular_item(tenant_id: str, id: str) -> bool:
     formular_item = get_formular_item(tenant_id, id)
     if formular_item:
         try:
-            delete_doc(tenant_id, id)
+            delete_doc(tenant_id, formular_item.filename, id)
         except Exception:
             print("error: delete doc")
         dynamo_db_service.delete_formular_item(tenant_id, id)
@@ -60,33 +60,32 @@ def delete_formular_item(tenant_id: str, id: str) -> bool:
 
 
 def request_put_doc(tenant_id, id) -> str:
-    doc_key = get_doc_key(tenant_id, id)
+    formular_item = get_formular_item(tenant_id, id)
+    if (formular_item):
+        doc_key = get_doc_key(tenant_id, formular_item.filename, id)
 
-    url = s3.generate_presigned_url('put_object', Params={
+        url = s3.generate_presigned_url('put_object', Params={
                                     'Bucket': s3_bucket_name, 'Key': doc_key}, ExpiresIn=3600)
-    return json.dumps(url)
+        return json.dumps(url)
+    else:
+        return ""
+    
 
 
 def request_get_doc(tenant_id, id) -> str:
-    doc_key = get_doc_key(tenant_id, id)
+    formular_item = get_formular_item(tenant_id, id)
+    if (formular_item):
+        doc_key = get_doc_key(tenant_id, formular_item.filename, id)
 
-    url = s3.generate_presigned_url('get_object', Params={
+        url = s3.generate_presigned_url('get_object', Params={
                                     'Bucket': s3_bucket_name, 'Key': doc_key}, ExpiresIn=3600)
-    return json.dumps(url)
-
-
-def put_doc(tenant_id, id, filename: str, body):
-    doc_key = get_doc_key(tenant_id, filename, id)
-
-    s3.put_object(Body=body, Bucket=s3_bucket_name, Key=doc_key)
-    item = get_formular_item(tenant_id=tenant_id, id=id)
-    update_formular_item(tenant_id=tenant_id,
-                     id=id,
-                     dto=json.loads(item.to_json()))
+        return json.dumps(url)
+    else:
+        return ""
 
 
 def delete_doc(tenant_id, id, filename: str):
-    doc_key = get_doc_key(tenant_id, id)
+    doc_key = get_doc_key(tenant_id, filename, id)
     s3.delete_object(Bucket=s3_bucket_name, Key=doc_key)
     item = get_formular_item(tenant_id=tenant_id, id=id)
     update_formular_item(tenant_id=tenant_id,
