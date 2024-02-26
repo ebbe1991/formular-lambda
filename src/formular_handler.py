@@ -89,7 +89,7 @@ def request_put_doc(id):
         'body': response
     }
 
-@app.get('/api/formular/<id>/get-doc')
+@app.get('/api/formularview/<id>/get-doc')
 def request_get_doc(id):
     event = app.current_event
     tenant_id = extract_tenant(event)
