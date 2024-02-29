@@ -50,7 +50,7 @@ def delete_formular_item(tenant_id: str, id: str) -> bool:
     formular_item = get_formular_item(tenant_id, id)
     if formular_item:
         try:
-            delete_doc(tenant_id, formular_item.filename, id)
+            delete_doc(tenant_id=tenant_id,id=id, filename=formular_item.filename)
         except Exception:
             print("error: delete doc")
         dynamo_db_service.delete_formular_item(tenant_id, id)
