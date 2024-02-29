@@ -62,10 +62,12 @@ def delete_formular_item(tenant_id: str, id: str) -> bool:
 def request_put_doc(tenant_id, id) -> str:
     formular_item = get_formular_item(tenant_id, id)
     if (formular_item):
-        doc_key = get_doc_key(tenant_id, formular_item.filename, id)
+        doc_key = get_doc_key(tenant_id=tenant_id, id=id, filename=formular_item.filename)
+        if formular_item.filename:
+            delete_doc(tenant_id=tenant_id, id=id, filename=formular_item.filename)
 
         url = s3.generate_presigned_url('put_object', Params={
-                                    'Bucket': s3_bucket_name, 'Key': doc_key}, ExpiresIn=3600)
+                                    'Bucket': s3_bucket_name, 'Key': doc_key}, ExpiresIn=60)
         return json.dumps(url)
     else:
         return ""
@@ -75,7 +77,7 @@ def request_put_doc(tenant_id, id) -> str:
 def request_get_doc(tenant_id, id) -> str:
     formular_item = get_formular_item(tenant_id, id)
     if (formular_item):
-        doc_key = get_doc_key(tenant_id, formular_item.filename, id)
+        doc_key = get_doc_key(tenant_id=tenant_id, id=id, filename=formular_item.filename)
 
         url = s3.generate_presigned_url('get_object', Params={
                                     'Bucket': s3_bucket_name, 'Key': doc_key}, ExpiresIn=3600)
@@ -85,7 +87,7 @@ def request_get_doc(tenant_id, id) -> str:
 
 
 def delete_doc(tenant_id, id, filename: str):
-    doc_key = get_doc_key(tenant_id, filename, id)
+    doc_key = get_doc_key(tenant_id=tenant_id, id=id, filename=filename)
     s3.delete_object(Bucket=s3_bucket_name, Key=doc_key)
     item = get_formular_item(tenant_id=tenant_id, id=id)
     update_formular_item(tenant_id=tenant_id,
