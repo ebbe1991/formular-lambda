@@ -63,8 +63,11 @@ def request_put_doc(tenant_id, id) -> str:
     formular_item = get_formular_item(tenant_id, id)
     if (formular_item):
         doc_key = get_doc_key(tenant_id=tenant_id, id=id, filename=formular_item.filename)
-        if formular_item.filename:
-            delete_doc(tenant_id=tenant_id, id=id, filename=formular_item.filename)
+
+        response = s3.list_objects_v2(Bucket=s3_bucket_name, Prefix=get_doc_folder(tenant_id=tenant_id, id=id))
+        objects_to_delete = [{'Key': obj['Key']} for obj in response.get('Contents', []) if obj['Key'] != doc_key]
+        for obj in objects_to_delete:
+            s3.delete_object(Bucket=s3_bucket_name, Key=obj['Key'])
 
         url = s3.generate_presigned_url('put_object', Params={
                                     'Bucket': s3_bucket_name, 'Key': doc_key}, ExpiresIn=60)
@@ -96,4 +99,8 @@ def delete_doc(tenant_id, id, filename: str):
 
 
 def get_doc_key(tenant_id: str, id: str, filename: str) -> str:
-    return f'formular/{tenant_id}/{id}/{filename}'
+    folder = get_doc_folder(tenant_id=tenant_id, id=id)
+    return f'{folder}{filename}'
+
+def get_doc_folder(tenant_id: str, id: str) -> str:
+    return f'formular/{tenant_id}/{id}/'
