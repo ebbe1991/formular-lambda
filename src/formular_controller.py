@@ -83,7 +83,7 @@ def request_get_doc(tenant_id, id) -> str:
         doc_key = get_doc_key(tenant_id=tenant_id, id=id, filename=formular_item.filename)
 
         url = s3.generate_presigned_url('get_object', Params={
-                                    'Bucket': s3_bucket_name, 'Key': doc_key}, ExpiresIn=3600)
+                                    'Bucket': s3_bucket_name, 'Key': doc_key}, ExpiresIn=60)
         return json.dumps(url)
     else:
         return ""
