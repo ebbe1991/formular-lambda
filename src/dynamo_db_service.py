@@ -16,6 +16,7 @@ def put_formular_item(tenant_id: str, formular_item: FormularDTO):
         Item={
             'tenant-id': tenant_id,
             'id': formular_item.id,
+            'kategorie': formular_item.kategorie,
             'titel': formular_item.titel,
             'filename': formular_item.filename,
             'beschreibung': formular_item.beschreibung

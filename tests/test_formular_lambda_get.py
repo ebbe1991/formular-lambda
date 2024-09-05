@@ -17,6 +17,7 @@ def test_get_formular_item_not_found(lambda_context, dynamodb_table):
 def test_get_formular_item_ok(lambda_context, dynamodb_table):
     item = {
         'titel': "Test.pdf",
+        'kategorie': "Fuhrpark",
         'filename': "t.pdf",
         "beschreibung": "Eine Testdatei"
     }
@@ -35,6 +36,7 @@ def test_get_formular_item_ok(lambda_context, dynamodb_table):
 def test_get_formular_item_with_introtext_ok(lambda_context, dynamodb_table):
     item = {
         'titel': "Test.pdf",
+        'kategorie': "Fuhrpark",
         'filename': "t.pdf",
         "beschreibung": "Eine Testdatei"
     }
@@ -55,6 +57,7 @@ def test_get_formular_item_without_tenant_id_not_ok(lambda_context, dynamodb_tab
     }
     item = {
         'titel': "Test.pdf",
+        'kategorie': "Fuhrpark",
         'filename': "t.pdf",
         "beschreibung": "Eine Testdatei"
     }

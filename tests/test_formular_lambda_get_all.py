@@ -7,11 +7,13 @@ from tests.helper import event, extract_body, extract_status_code, lambda_respon
 def test_get_formular_items_ok(lambda_context, dynamodb_table):
     item1 = {
         'titel': "Test.pdf",
+        'kategorie': "Fuhrpark",
         'filename': "t.pdf",
         "beschreibung": "Eine Testdatei"
     }
     item2 = {
         'titel': "Test2.pdf",
+        'kategorie': "Fuhrpark",
         'filename': "t2.pdf",
         "beschreibung": "Eine Testdatei"
     }

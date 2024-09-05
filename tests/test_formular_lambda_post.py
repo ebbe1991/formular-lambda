@@ -8,6 +8,7 @@ from tests.helper import event, lambda_response, extract_id
 def test_create_formular_item_ok(lambda_context, dynamodb_table):
     item = {
         'titel': "Test.pdf",
+        'kategorie': "Fuhrpark",
         'filename': "t.pdf",
         "beschreibung": "Eine Testdatei"
     }
@@ -18,12 +19,13 @@ def test_create_formular_item_ok(lambda_context, dynamodb_table):
 
     assert id is not None
     assert response == lambda_response(201, FormularDTO(
-        "Test.pdf", "t.pdf", "Eine Testdatei", id).to_json())
+        "Test.pdf", "Fuhrpark", "t.pdf", "Eine Testdatei", id).to_json())
 
 
 def test_create_formular_item_missing_field_titel_bad_request(lambda_context, dynamodb_table):
     item = {
         'filename': "t.pdf",
+        'kategorie': "Fuhrpark",
         "beschreibung": "Eine Testdatei"
     }
     response = formular_handler.handle(
@@ -35,6 +37,7 @@ def test_create_formular_item_missing_field_titel_bad_request(lambda_context, dy
 def test_create_formular_item_missing_field_filename_bad_request(lambda_context, dynamodb_table):
     item = {
         'titel': "Test.pdf",
+        'kategorie': "Fuhrpark",
         "beschreibung": "Eine Testdatei"
     }
     response = formular_handler.handle(
@@ -48,6 +51,7 @@ def test_create_formular_item_missing_field_filename_bad_request(lambda_context,
 def test_create_formular_item_without_optional_parameters_ok(lambda_context, dynamodb_table):
     item = {
         'titel': "Test.pdf",
+        'kategorie': "Fuhrpark",
         'filename': "t.pdf"
     }
     response = formular_handler.handle(
@@ -56,7 +60,7 @@ def test_create_formular_item_without_optional_parameters_ok(lambda_context, dyn
 
     assert id is not None
     assert response == lambda_response(201, FormularDTO(
-        "Test.pdf", "t.pdf", None, id).to_json())
+        "Test.pdf", "Fuhrpark", "t.pdf", None, id).to_json())
 
 
 
@@ -73,6 +77,7 @@ def test_create_formular_item_without_tenant_id_not_ok(lambda_context, dynamodb_
     }
     item = {
         'titel': "Test.pdf",
+        'kategorie': "Fuhrpark",
         'filename': "t.pdf",
         "beschreibung": "Eine Testdatei"
     }

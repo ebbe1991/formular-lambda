@@ -7,6 +7,7 @@ from tests.helper import event, lambda_response, DEFAULT_TENANT_ID
 def test_delete_formular_item_ok(lambda_context, dynamodb_table):
     item = {
         'titel': "Test.pdf",
+        'kategorie': "Fuhrpark",
         'filename': "t.pdf",
         "beschreibung": "Eine Testdatei"
     }

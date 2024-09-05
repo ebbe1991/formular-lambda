@@ -9,6 +9,7 @@ from tests.helper import event, lambda_response, DEFAULT_TENANT_ID
 def test_update_formular_item_ok(lambda_context, dynamodb_table):
     item = {
         'titel': "Test.pdf",
+        'kategorie': "Fuhrpark",
         'filename': "t.pdf",
         "beschreibung": "Eine Testdatei"
     }
@@ -21,6 +22,7 @@ def test_update_formular_item_ok(lambda_context, dynamodb_table):
     }
     itemUpdate = {
         'titel': "Test.pdf",
+        'kategorie': "Fuhrpark",
         'filename': "t.pdf",
         "beschreibung": "Eine Testdatei (aktualisiert)"
     }
@@ -28,12 +30,13 @@ def test_update_formular_item_ok(lambda_context, dynamodb_table):
         '/api/formular/{id}', 'PUT', json.dumps(itemUpdate), pathParameters), lambda_context)
 
     assert response == lambda_response(200, FormularDTO(
-        "Test.pdf", "t.pdf", "Eine Testdatei (aktualisiert)", createdformular_item.id).to_json())
+        "Test.pdf", "Fuhrpark", "t.pdf", "Eine Testdatei (aktualisiert)", createdformular_item.id).to_json())
 
 
 def test_update_formular_item_required_field_to_null_not_ok(lambda_context, dynamodb_table):
     item = {
         'titel': "Test.pdf",
+        'kategorie': "Fuhrpark",
         'filename': "t.pdf",
         "beschreibung": "Eine Testdatei"
     }
@@ -46,6 +49,7 @@ def test_update_formular_item_required_field_to_null_not_ok(lambda_context, dyna
     }
     itemUpdate = {
         'filename': "t.pdf",
+        'kategorie': "Fuhrpark",
         "beschreibung": "Eine Testdatei"
     }
     response = formular_handler.handle(event(
@@ -61,6 +65,7 @@ def test_update_formular_item_with_unknown_id_not_ok(lambda_context, dynamodb_ta
     }
     itemUpdate = {
         'titel': "Test.pdf",
+        'kategorie': "Fuhrpark",
         'filename': "t.pdf",
         "beschreibung": "Eine Testdatei"
     }
@@ -74,6 +79,7 @@ def test_update_formular_item_with_unknown_id_not_ok(lambda_context, dynamodb_ta
 def test_update_formular_item_set_null_value(lambda_context, dynamodb_table):
     item = {
         'titel': "Test.pdf",
+        'kategorie': "Fuhrpark",
         'filename': "t.pdf",
         "beschreibung": "Eine Testdatei"
     }
@@ -85,19 +91,21 @@ def test_update_formular_item_set_null_value(lambda_context, dynamodb_table):
     }
 
     itemUpdate = {
-        'titel': "Test.pdf",        
+        'titel': "Test.pdf",
+        'kategorie': "Fuhrpark",
         'filename': "t.pdf",
     }
     response = formular_handler.handle(event(
         '/api/formular/{id}', 'PUT', json.dumps(itemUpdate), pathParameters), lambda_context)
 
     assert response == lambda_response(200, FormularDTO(
-        "Test.pdf", "t.pdf", None, createdformular_item.id).to_json())
+        "Test.pdf", "Fuhrpark", "t.pdf", None, createdformular_item.id).to_json())
 
 
 def test_update_formular_item_without_body_not_ok(lambda_context, dynamodb_table):
     item = {
         'titel': "Test.pdf",
+        'kategorie': "Fuhrpark",
         'filename': "t.pdf",
         "beschreibung": "Eine Testdatei"
     }
@@ -121,6 +129,7 @@ def test_update_formular_item_without_tenant_id_not_ok(lambda_context, dynamodb_
     }
     item = {
         'titel': "Test.pdf",
+        'kategorie': "Fuhrpark",
         'filename': "t.pdf",
         "beschreibung": "Eine Testdatei"
     }
@@ -132,6 +141,7 @@ def test_update_formular_item_without_tenant_id_not_ok(lambda_context, dynamodb_
     }
     itemUpdate = {
         'titel': "Test.pdf",
+        'kategorie': "Fuhrpark",
         'filename': "t.pdf",
         "beschreibung": "Eine Testdatei (aktualisiert)"
     }
